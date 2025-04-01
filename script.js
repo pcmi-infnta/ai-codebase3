@@ -26,8 +26,9 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 
 // API configuration
 const GREPTILE_API_KEY = "A1+sUJ/IzDKoKvl8L7/40JEmcTccnjSMlpwV31BqfvOv2M/8";
-const GITHUB_TOKEN = "<MY_GH_TOKEN>";
+const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
+const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
 
 // Load theme and chat data from local storage on page load
 const loadDataFromLocalstorage = () => {
@@ -86,13 +87,7 @@ const displaySuggestions = async (messageDiv, aiResponse) => {
                     role: "user",
                     content: suggestionsPrompt
                 }],
-                repositories: [
-                    {
-                        remote: "github",
-                        repository: "pcmi-infnta/pcmi-official",
-                        branch: "main"
-                    }
-                ]
+                repositories: [{ remote: "github", repository: REPOSITORY_NAME, branch: "main" }]
             })
         });
 
@@ -183,39 +178,41 @@ const displaySuggestions = async (messageDiv, aiResponse) => {
 }
 
 // Show typing effect by displaying words one by one
-const showTypingEffect = (text, textElement, incomingMessageDiv) => {
-    const words = text.split(' ');
-    let currentWordIndex = 0;
+const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
+  // Remove any existing suggestions container
+  const existingSuggestions = incomingMessageDiv.querySelector(".suggestions-container");
+  if (existingSuggestions) {
+    existingSuggestions.remove();
+  }
+  
+  // Directly assign the full response text
+  textElement.textContent = text;
+  
+  // Add a fade-in class to trigger the CSS animation
+  incomingMessageDiv.classList.add("fade-in");
+  
+  // Remove the fade-in class after the animation so it can be applied again for future messages
+  setTimeout(() => {
+    incomingMessageDiv.classList.remove("fade-in");
+  }, 700);  // Adjust time to match the CSS animation duration
+  
+  isResponseGenerating = false;
+  incomingMessageDiv.querySelector(".icon").classList.remove("hide");
+  localStorage.setItem("saved-chats", chatContainer.innerHTML);
+  
+  // Only show suggestions if the response is not the inappropriate message
+  if (text.trim() !== "I'm sorry, I can't answer that.") {
+      setTimeout(() => {
+          displaySuggestions(incomingMessageDiv, text);
+      }, 500);
+  }
 
-    const existingSuggestions = incomingMessageDiv.querySelector(".suggestions-container");
-    if (existingSuggestions) {
-        existingSuggestions.remove();
-    }
-
-    const typingInterval = setInterval(() => {
-        textElement.innerHTML += (currentWordIndex === 0 ? '' : ' ') + words[currentWordIndex++];
-        incomingMessageDiv.querySelector(".icon").classList.add("hide");
-
-        if (currentWordIndex === words.length) {
-            clearInterval(typingInterval);
-            isResponseGenerating = false;
-            incomingMessageDiv.querySelector(".icon").classList.remove("hide");
-            localStorage.setItem("saved-chats", chatContainer.innerHTML);
-            
-            // Only show suggestions if it's NOT the inappropriate response
-            if (text.trim() !== "I'm sorry, I can't answer that.") {
-                setTimeout(() => {
-                    displaySuggestions(incomingMessageDiv, text);
-                }, 500);
-            }
-        }
-        
-        if (!userIsScrolling) {
-            chatContainer.scrollTo(0, chatContainer.scrollHeight);
-        }
-    }, 75);
+  if (!userIsScrolling) {
+      chatContainer.scrollTo(0, chatContainer.scrollHeight);
+  }
 }
-
+        
+        
 // Event listener detect manual scrolling
 chatContainer.addEventListener('scroll', () => {
     userIsScrolling = true;
@@ -287,13 +284,7 @@ const generateAPIResponse = async (incomingMessageDiv) => {
 
     const payload = {
         messages: messagesPayload,
-        repositories: [
-            {
-                remote: "github",
-                repository: "pcmi-infnta/pcmi-official", // Ensure this matches the expected repo
-                branch: "main"
-            }
-        ]
+        repositories: [{ remote: "github", repository: REPOSITORY_NAME, branch: "main" }]
     };
 
     console.log(JSON.stringify(payload)); // Log the payload to verify the format
@@ -322,7 +313,7 @@ const generateAPIResponse = async (incomingMessageDiv) => {
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
 
         textElement.textContent = '';
-        showTypingEffect(apiResponse, textElement, incomingMessageDiv);
+        showFadeInEffect(apiResponse, textElement, incomingMessageDiv);
 
     } catch (error) {
         isResponseGenerating = false;

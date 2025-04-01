@@ -941,3 +941,7 @@ img {
 .chat-list .message:hover .message-actions .icon {
     visibility: visible;
 }
+
+.fade-in {
+  animation: fadeIn 0.7s ease forwards;
+}
