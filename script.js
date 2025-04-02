@@ -266,20 +266,21 @@ const generateAPIResponse = async (incomingMessageDiv) => {
         return;
     }
     
-    // Create the conversation payload
-    const messagesPayload = conversationHistory.map((msg, i) => {
-        return {
-            id: "msg-" + i, // you can generate a unique ID or use a counter
-            role: msg.role,
-            content: msg.content
-        };
-    });
+    // Incorporate the training data into the prompt
+    const combinedPrompt = getCombinedTrainingData() + "\n\nUser: " + userMessage;
+
+    // Create the conversation payload with training data
+    const messagesPayload = conversationHistory.map((msg, i) => ({
+        id: "msg-" + i,
+        role: msg.role,
+        content: msg.content
+    }));
 
     // Add the current user message
     messagesPayload.push({
         id: "msg-" + messagesPayload.length,
         role: "user",
-        content: userMessage
+        content: combinedPrompt
     });
 
     const payload = {
