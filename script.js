@@ -46,6 +46,13 @@ const loadDataFromLocalstorage = () => {
     chatContainer.scrollTo(0, chatContainer.scrollHeight); 
 }
 
+function convertCodeSnippets(text) {
+    // This regex matches text between three asterisks ***...***
+    return text.replace(/(\*\*\*)([\s\S]*?)(\*\*\*)/g, function(match, p1, p2, p3) {
+        return `<div class="code-block">${p2.trim()}</div>`;
+    });
+}
+
 const createMessageElement = (content, ...classes) => {
     const div = document.createElement("div");
     div.classList.add("message", ...classes);
@@ -72,7 +79,7 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         existingSuggestions.remove();
     }
 
-    textElement.innerHTML = text;
+    textElement.innerHTML = convertCodeSnippets(text); // Updated to include code snippet conversion
 
     incomingMessageDiv.classList.add("fade-in");
 

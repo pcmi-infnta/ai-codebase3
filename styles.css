@@ -971,3 +971,16 @@ pre, code {
     margin: 0;
     font-size: 0.95em;
 }   
+
+
+.code-block {
+  background-color: #2d2d2d;   /* Dark background */
+  color: #f8f8f2;              /* Light text color */
+  border: 1px solid #444;      /* A subtle border */
+  border-radius: 4px;
+  padding: 10px;
+  font-family: monospace;      /* Monospace font for code */
+  overflow-x: auto;            /* Horizontal scroll if code is wide */
+  white-space: pre-wrap;       /* Wrap long lines if needed */
+  margin: 10px 0;             /* Some vertical margin */
+}
