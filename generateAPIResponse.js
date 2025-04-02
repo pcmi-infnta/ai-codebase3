@@ -15,14 +15,15 @@ export async function generateAPIResponse(
     const textElement = incomingMessageDiv.querySelector(".text");
 
     if (isInappropriateContent(userMessage)) {
-        textElement.textContent = "I'm sorry, I can't answer that.";
+
+        textElement.textContent = ""; 
         isResponseGenerating = false;  
         incomingMessageDiv.classList.remove("loading");
 
         conversationHistory.push({
             id: "msg-" + conversationHistory.length,
             role: "assistant",
-            content: "I'm sorry, I can't answer that."
+            content: textElement.textContent
         });
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
 
@@ -76,17 +77,8 @@ export async function generateAPIResponse(
 
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
 
-        // Create code snippet container if response contains code
-        const codeSnippetContainer = document.createElement("div");
-        codeSnippetContainer.className = "code-snippet";
-        codeSnippetContainer.innerHTML = `
-            <pre><code class="language-js">${apiResponse}</code></pre>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        `;
-        textElement.innerHTML = ''; // Clear previous content
-        textElement.appendChild(codeSnippetContainer); // Append code snippet
-        
-        showFadeInEffect(codeSnippetContainer.outerHTML, textElement, incomingMessageDiv); // Use the passed showFadeInEffect
+        textElement.textContent = '';
+        showFadeInEffect(apiResponse, textElement, incomingMessageDiv); // Use the passed showFadeInEffect
 
     } catch (error) {
         isResponseGenerating = false;  
@@ -101,14 +93,4 @@ export async function generateAPIResponse(
             answerIndicator.textContent = "Answer";
         }
     }
-}
-
-function copyCode(button) {
-    const code = button.previousElementSibling.innerText;
-    navigator.clipboard.writeText(code).then(() => {
-        button.innerText = "Copied!";
-        setTimeout(() => button.innerText = "Copy", 1000);
-    }).catch(err => {
-        console.error('Failed to copy code: ', err);
-    });
 }

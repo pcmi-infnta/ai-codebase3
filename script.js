@@ -163,6 +163,7 @@ const showLoadingAnimation = () => {
     );
 }
 
+// Define copyMessage function and expose it to the global scope
 const copyMessage = (copyButton) => {
     const messageContainer = copyButton.closest('.message-container');
     const messageText = messageContainer.querySelector(".text").innerText;
@@ -174,6 +175,9 @@ const copyMessage = (copyButton) => {
         console.error('Failed to copy text: ', err);
     });
 }
+
+// Expose copyMessage to the global scope
+window.copyMessage = copyMessage;
 
 const toggleFollowUps = (menuButton) => {
     const messageDiv = menuButton.closest('.message');
