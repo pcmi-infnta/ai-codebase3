@@ -51,8 +51,9 @@ body {
   max-height: 100vh;
   overflow-y: auto;
   scrollbar-color: #999 transparent;
-  position: relative; /* Add this line */
-  z-index: 1; /* Add this line */
+  position: relative; 
+  z-index: 1; 
+  overflow: auto;
 }
 
 .header, .chat-list .message, .typing-form {
@@ -524,7 +525,10 @@ body.hide-header .header {
   transition: all 0.5s ease;
   position: relative;
   z-index: 1;
-}
+/*  white-space: pre-wrap;*/
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+ }
 
 
 @keyframes fadeIn {
@@ -945,3 +949,9 @@ img {
 .fade-in {
   animation: fadeIn 0.7s ease forwards;
 }
+
+pre, code {
+     white-space: pre-wrap;
+     word-wrap: break-word;
+     overflow-x: auto; 
+   }
