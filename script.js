@@ -26,7 +26,7 @@ const toggleThemeButton = document.querySelector("#theme-toggle-button");
 const deleteChatButton = document.querySelector("#delete-chat-button");
 
 const GREPTILE_API_KEY = "A1+sUJ/IzDKoKvl8L7/40JEmcTccnjSMlpwV31BqfvOv2M/8";
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
 const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
 
@@ -62,7 +62,7 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         existingSuggestions.remove();
     }
 
-    textElement.textContent = text;
+    textElement.innerHTML = text;
 
     incomingMessageDiv.classList.add("fade-in");
 

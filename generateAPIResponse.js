@@ -10,7 +10,7 @@ export async function generateAPIResponse(
     API_URL,
     GREPTILE_API_KEY,
     GITHUB_TOKEN,
-    showFadeInEffect // Add this parameter
+    showFadeInEffect
 ) {
     const textElement = incomingMessageDiv.querySelector(".text");
 
@@ -76,8 +76,17 @@ export async function generateAPIResponse(
 
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
 
-        textElement.textContent = '';
-        showFadeInEffect(apiResponse, textElement, incomingMessageDiv); // Use the passed showFadeInEffect
+        // Create code snippet container if response contains code
+        const codeSnippetContainer = document.createElement("div");
+        codeSnippetContainer.className = "code-snippet";
+        codeSnippetContainer.innerHTML = `
+            <pre><code class="language-js">${apiResponse}</code></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        `;
+        textElement.innerHTML = ''; // Clear previous content
+        textElement.appendChild(codeSnippetContainer); // Append code snippet
+        
+        showFadeInEffect(codeSnippetContainer.outerHTML, textElement, incomingMessageDiv); // Use the passed showFadeInEffect
 
     } catch (error) {
         isResponseGenerating = false;  
@@ -92,4 +101,14 @@ export async function generateAPIResponse(
             answerIndicator.textContent = "Answer";
         }
     }
+}
+
+function copyCode(button) {
+    const code = button.previousElementSibling.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        button.innerText = "Copied!";
+        setTimeout(() => button.innerText = "Copy", 1000);
+    }).catch(err => {
+        console.error('Failed to copy code: ', err);
+    });
 }
