@@ -15,7 +15,6 @@ export async function generateAPIResponse(
     const textElement = incomingMessageDiv.querySelector(".text");
 
     if (isInappropriateContent(userMessage)) {
-
         textElement.textContent = ""; 
         isResponseGenerating = false;  
         incomingMessageDiv.classList.remove("loading");
@@ -78,7 +77,7 @@ export async function generateAPIResponse(
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
 
         textElement.textContent = '';
-        showFadeInEffect(apiResponse, textElement, incomingMessageDiv); // Use the passed showFadeInEffect
+        showFadeInEffect(apiResponse, textElement, incomingMessageDiv);
 
     } catch (error) {
         isResponseGenerating = false;  

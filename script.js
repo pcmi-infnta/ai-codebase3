@@ -1,4 +1,5 @@
 import { generateAPIResponse } from './generateAPIResponse.js';
+import { getCombinedTrainingData } from './training-data.js';
 
 let conversationHistory = [];
 let userIsScrolling = false;
@@ -50,6 +51,15 @@ const createMessageElement = (content, ...classes) => {
     div.classList.add("message", ...classes);
     div.innerHTML = content;
     return div;
+}
+
+function processAIResponse(responseText) {
+    const marker = "***";
+    if (responseText.startsWith(marker) && responseText.endsWith(marker)) {
+        let innerText = responseText.substring(marker.length, responseText.length - marker.length).trim();
+        responseText = `<div class="ai-code-snippet"><code>${innerText}</code></div>`;
+    }
+    return responseText;
 }
 
 const displaySuggestions = async (messageDiv, aiResponse) => {
@@ -114,12 +124,6 @@ const isInappropriateContent = (message) => {
     return inappropriateKeywords.some(keyword => message.toLowerCase().includes(keyword));
 };
 
-// Define getCombinedTrainingData function
-const getCombinedTrainingData = () => {
-    // Replace this with your actual logic to get combined training data
-    return "Combined training data goes here.";
-};
-
 const showLoadingAnimation = () => {
     const html = `<div class="message-content">
                     <div class="header-row">
@@ -146,7 +150,6 @@ const showLoadingAnimation = () => {
     chatContainer.appendChild(incomingMessageDiv);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
     
-    // Pass the necessary functions and variables to the function
     generateAPIResponse(
         incomingMessageDiv,
         userMessage,
@@ -159,11 +162,13 @@ const showLoadingAnimation = () => {
         API_URL,
         GREPTILE_API_KEY,
         GITHUB_TOKEN,
-        showFadeInEffect
+        (aiResponse) => {
+            const processedResponse = processAIResponse(aiResponse);
+            showFadeInEffect(processedResponse, incomingMessageDiv.querySelector(".text"), incomingMessageDiv);
+        }
     );
 }
 
-// Define copyMessage function and expose it to the global scope
 const copyMessage = (copyButton) => {
     const messageContainer = copyButton.closest('.message-container');
     const messageText = messageContainer.querySelector(".text").innerText;
@@ -176,7 +181,6 @@ const copyMessage = (copyButton) => {
     });
 }
 
-// Expose copyMessage to the global scope
 window.copyMessage = copyMessage;
 
 const toggleFollowUps = (menuButton) => {
