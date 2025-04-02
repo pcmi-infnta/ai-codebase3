@@ -40,7 +40,7 @@ export async function generateAPIResponse(
     messagesPayload.push({
         id: "msg-" + messagesPayload.length,
         role: "user",
-        content: combinedPrompt
+        content: combinedPrompt.replace(/(\*\*\*)([\s\S]*?)(\*\*\*)/g, '```$2```') // Update inline snippets
     });
 
     const payload = {

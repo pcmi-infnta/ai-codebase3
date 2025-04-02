@@ -47,8 +47,8 @@ const loadDataFromLocalstorage = () => {
 }
 
 function convertCodeSnippets(text) {
-    // This regex matches text between three asterisks ***...***
-    return text.replace(/(\*\*\*)([\s\S]*?)(\*\*\*)/g, function(match, p1, p2, p3) {
+    // This regex matches text between three backticks ```...```
+    return text.replace(/(```)([\s\S]*?)(```)/g, function(match, p1, p2, p3) {
         return `<div class="code-block">${p2.trim()}</div>`;
     });
 }
@@ -61,7 +61,7 @@ const createMessageElement = (content, ...classes) => {
 }
 
 function processAIResponse(responseText) {
-    const marker = "***";
+    const marker = "```";
     if (responseText.startsWith(marker) && responseText.endsWith(marker)) {
         let innerText = responseText.substring(marker.length, responseText.length - marker.length).trim();
         responseText = `<div class="ai-code-snippet"><code>${innerText}</code></div>`;
