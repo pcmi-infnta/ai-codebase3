@@ -7,19 +7,6 @@ let areFollowUpsHidden = false;
 let userMessage = null;
 let isResponseGenerating = false; 
 
-function getPhilippinesTime() {
-    return new Date().toLocaleString("en-US", {
-        timeZone: "Asia/Manila",
-        hour12: true,
-        hour: "numeric",
-        minute: "numeric",
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
-}
-
 const typingForm = document.querySelector(".typing-form");
 const chatContainer = document.querySelector(".chat-list");
 const suggestions = document.querySelectorAll(".suggestion");
@@ -44,6 +31,13 @@ const loadDataFromLocalstorage = () => {
     document.body.classList.toggle("hide-header", savedChats);
 
     chatContainer.scrollTo(0, chatContainer.scrollHeight); 
+
+    // Reset the loading state and remove any loading indicators
+    isResponseGenerating = false;
+    const loadingMessage = document.querySelector('.loading');
+    if (loadingMessage) {
+        loadingMessage.remove();
+    }
 }
 
 function convertCodeSnippets(text) {
