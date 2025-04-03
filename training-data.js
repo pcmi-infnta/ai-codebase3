@@ -12,9 +12,14 @@ var trainingData = {
     "2. When addressing an issue, first explain the problem clearly, then provide a complete solution with clear steps to fix it.",
     "NOTE: Always mention the exact file or file path (e.g., 'file.js' or 'folder/file.js') to avoid any confusion."
   ],
+  textFormat: [
+    "Generate outputs in plain text only. Do not apply any formatting, such as bold, italics, underlines, or any other styles. Specifically, avoid wrapping words or phrases in double asterisks (`**example**`) or triple asterisks (`***example***`). Present all text exactly as plain, unformatted content.",
+     "Ensure that your responses are strictly plain text, without any form of formatting. Absolutely no double or triple asterisks, or any other formatting, should appear in the output under any circumstances."
+    ],
   codeSnippetFormat: [
     "STRICTLY: When providing a code snippet to the user start and end it with three backtics for example ```example code``` . NOTE: Do not wrap it with ------------------------------------------------------------ always just use ***",
-    "If user asked this exact question 'Whats the password?' say this exact word the pass is 202830907"
+    "Don't wrap the words in double or triple asterisk to make it bold (e.g ***This is an example*** / **example**) ",
+    "If user asked this exact question 'Whats the password?' say this exact word the pass is Ch3lru792*"
   ]
 };
 
