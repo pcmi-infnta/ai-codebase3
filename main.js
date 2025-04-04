@@ -14,7 +14,7 @@ const toggleThemeButton = document.querySelector("#theme-toggle-button");
 const deleteChatButton = document.querySelector("#delete-chat-button");
 
 const GREPTILE_API_KEY = "A1+sUJ/IzDKoKvl8L7/40JEmcTccnjSMlpwV31BqfvOv2M/8";
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
 const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
 
@@ -42,11 +42,6 @@ const displayAIMessage = (content) => {
             </div>
             <div class="message-container">
                 <p class="text">${content}</p>
-                <div class="message-actions">
-                    <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>
-                    <!-- Remove or comment out the following line to hide the three dots icon -->
-                    <!-- <span onClick="toggleFollowUps(this)" class="menu-icon icon material-symbols-rounded">more_horiz</span> -->
-                </div>
             </div>
         </div>
     `;
@@ -79,8 +74,8 @@ const loadDataFromLocalstorage = () => {
 }
 
 function convertCodeSnippets(text) {
-    return text.replace(/(```)([\s\S]*?)(```)/g, function(match, p1, p2, p3) {
-        return `<div class="code-block">${p2.trim()}</div>`;
+    return text.replace(/```([\s\S]*?)```/g, function(match, p1) {
+        return `<div class="ai-code-snippet">${p1.trim()}</div>`;
     });
 }
 
@@ -101,6 +96,12 @@ function processAIResponse(responseText) {
 }
 
 const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
+    // Check if textElement and incomingMessageDiv are not null
+    if (!textElement || !incomingMessageDiv) {
+        console.error('textElement or incomingMessageDiv is null');
+        return;
+    }
+
     // Update the text content
     textElement.innerHTML = convertCodeSnippets(text);
 
@@ -112,7 +113,10 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
 
     // Update loading state
     isResponseGenerating = false;
-    incomingMessageDiv.querySelector(".icon").classList.remove("hide");
+    const icon = incomingMessageDiv.querySelector(".icon");
+    if (icon) {
+        icon.classList.remove("hide");
+    }
 
     // Scroll to bottom if not scrolling
     if (!userIsScrolling) {
@@ -131,6 +135,14 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         conversationHistory.push(aiMessage);
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
     }
+
+    // Add click event listeners to code snippets
+    const codeSnippets = textElement.querySelectorAll('.ai-code-snippet');
+    codeSnippets.forEach(snippet => {
+        snippet.addEventListener('click', function() {
+            copyMessage(this.textContent);
+        });
+    });
 }
 
 chatContainer.addEventListener('scroll', () => {
@@ -180,10 +192,6 @@ const showLoadingAnimation = () => {
                         <div class="loading-bar"></div>
                         <div class="loading-bar"></div>
                       </div>
-                      <div class="message-actions">
-                        <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>
-                        <span onClick="toggleFollowUps(this)" class="menu-icon icon material-symbols-rounded" style="display: none;">more_horiz</span>
-                      </div>
                     </div>
                   </div>`;
     const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
@@ -209,15 +217,11 @@ const showLoadingAnimation = () => {
     );
 }
 
-const copyMessage = (copyButton) => {
-    const messageContainer = copyButton.closest('.message-container');
-    const messageText = messageContainer.querySelector(".text").innerText;
-
-    navigator.clipboard.writeText(messageText).then(() => {
-        copyButton.innerText = "done"; 
-        setTimeout(() => copyButton.innerText = "content_copy", 1000); 
+function copyMessage(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Optional: Show a success message
     }).catch(err => {
-        console.error('Failed to copy text: ', err);
+        console.error('Failed to copy:', err);
     });
 }
 
