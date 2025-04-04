@@ -1,5 +1,5 @@
-import { generateAPIResponse } from './generateAPIResponse.js';
-import { getCombinedTrainingData } from './training-data.js';
+import { generateAPIResponse } from './scripts/generateAPIResponse.js';
+import { getCombinedTrainingData } from './scripts/training-data.js';
 
 let conversationHistory = [];
 let userIsScrolling = false;
@@ -16,32 +16,69 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 const GREPTILE_API_KEY = "A1+sUJ/IzDKoKvl8L7/40JEmcTccnjSMlpwV31BqfvOv2M/8";
 const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
-const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
+const REPOSITORY_NAME = "pcmi-infnta/finance-app";
+
+// Helper functions to display messages
+const displayUserMessage = (content) => {
+    const html = `
+        <div class="message-content">
+            <img class="avatar" src="images/avatars/user.gif" alt="User avatar">
+            <div class="message-container">
+                <p class="text">${content}</p>
+            </div>
+        </div>
+    `;
+    const outgoingMessageDiv = createMessageElement(html, "outgoing");
+    chatContainer.appendChild(outgoingMessageDiv);
+}
+
+const displayAIMessage = (content) => {
+    const html = `
+        <div class="message-content">
+            <div class="header-row">
+                <div class="avatar-container">
+                    <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
+                </div>
+            </div>
+            <div class="message-container">
+                <p class="text">${content}</p>
+                <div class="message-actions">
+                    <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>
+                    <!-- Remove or comment out the following line to hide the three dots icon -->
+                    <!-- <span onClick="toggleFollowUps(this)" class="menu-icon icon material-symbols-rounded">more_horiz</span> -->
+                </div>
+            </div>
+        </div>
+    `;
+    const incomingMessageDiv = createMessageElement(html, "incoming");
+    chatContainer.appendChild(incomingMessageDiv);
+}
 
 const loadDataFromLocalstorage = () => {
-    const savedChats = localStorage.getItem("saved-chats");
     const savedHistory = localStorage.getItem("conversation-history");
-    const isLightMode = (localStorage.getItem("themeColor") === "light_mode");
 
-    if (savedHistory) {
-        conversationHistory = JSON.parse(savedHistory);
+    // Reset conversationHistory
+    conversationHistory = savedHistory ? JSON.parse(savedHistory) : [];
+
+    // Clear the chat container
+    chatContainer.innerHTML = '';
+
+    // Rebuild the chat from conversationHistory
+    if (conversationHistory.length > 0) {
+        conversationHistory.forEach((message) => {
+            if (message.role === "user") {
+                displayUserMessage(message.content);
+            } else if (message.role === "assistant") {
+                displayAIMessage(message.content);
+            }
+        });
     }
 
-    chatContainer.innerHTML = savedChats || '';
-    document.body.classList.toggle("hide-header", savedChats);
-
-    chatContainer.scrollTo(0, chatContainer.scrollHeight); 
-
-    // Reset the loading state and remove any loading indicators
-    isResponseGenerating = false;
-    const loadingMessage = document.querySelector('.loading');
-    if (loadingMessage) {
-        loadingMessage.remove();
-    }
+    document.body.classList.toggle("hide-header", conversationHistory.length > 0);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
 }
 
 function convertCodeSnippets(text) {
-    // This regex matches text between three backticks ```...```
     return text.replace(/(```)([\s\S]*?)(```)/g, function(match, p1, p2, p3) {
         return `<div class="code-block">${p2.trim()}</div>`;
     });
@@ -63,34 +100,36 @@ function processAIResponse(responseText) {
     return responseText;
 }
 
-const displaySuggestions = async (messageDiv, aiResponse) => {
-    // Implementation to display suggestions
-}
-
 const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
-    const existingSuggestions = incomingMessageDiv.querySelector(".suggestions-container");
-    if (existingSuggestions) {
-        existingSuggestions.remove();
-    }
+    // Update the text content
+    textElement.innerHTML = convertCodeSnippets(text);
 
-    textElement.innerHTML = convertCodeSnippets(text); // Updated to include code snippet conversion
-
+    // Add fade-in animation
     incomingMessageDiv.classList.add("fade-in");
-
     setTimeout(() => {
         incomingMessageDiv.classList.remove("fade-in");
-    }, 700);  
+    }, 700);
 
+    // Update loading state
     isResponseGenerating = false;
     incomingMessageDiv.querySelector(".icon").classList.remove("hide");
-    localStorage.setItem("saved-chats", chatContainer.innerHTML);
 
-    if (text.trim() !== "I'm sorry, I can't answer that.") {
-        // Additional handling if necessary
-    }
-
+    // Scroll to bottom if not scrolling
     if (!userIsScrolling) {
         chatContainer.scrollTo(0, chatContainer.scrollHeight);
+    }
+
+    // Add AI response to conversationHistory and save to localStorage
+    const aiMessage = {
+        id: "msg-" + conversationHistory.length,
+        role: "assistant",
+        content: text
+    };
+
+    // Check for duplicates before adding to conversationHistory
+    if (!conversationHistory.find(msg => msg.content === aiMessage.content && msg.role === "assistant")) {
+        conversationHistory.push(aiMessage);
+        localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
     }
 }
 
@@ -218,31 +257,37 @@ const handleOutgoingChat = () => {
 
     isResponseGenerating = true;
 
-    conversationHistory.push({
+    // Add user message to conversationHistory
+    const userMsg = {
         id: "msg-" + conversationHistory.length,
         role: "user",
         content: userMessage
-    });
+    };
+    conversationHistory.push(userMsg);
 
-    const html = `<div class="message-content">
-                <img class="avatar" src="images/avatars/user.gif" alt="User avatar">
-                <div class="message-container">
-                  <p class="text"></p>
-                </div>
-              </div>`;
-
+    // Display user message
+    const html = `
+        <div class="message-content">
+            <img class="avatar" src="images/avatars/user.gif" alt="User avatar">
+            <div class="message-container">
+                <p class="text">${userMessage}</p>
+            </div>
+        </div>
+    `;
     const outgoingMessageDiv = createMessageElement(html, "outgoing");
-    outgoingMessageDiv.querySelector(".text").innerText = userMessage;
     chatContainer.appendChild(outgoingMessageDiv);
 
-    typingForm.reset(); 
-
+    // Clear input and reset form
+    typingForm.reset();
     inputWrapper.classList.remove("expanded");
     actionButtons.classList.remove("hide");
 
+    // Update UI
     document.body.classList.add("hide-header");
-    chatContainer.scrollTo(0, chatContainer.scrollHeight); 
-    setTimeout(showLoadingAnimation, 500); 
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+
+    // Show loading animation
+    setTimeout(showLoadingAnimation, 500);
 }
 
 const waveContainer = document.querySelector(".theme-wave-container");
