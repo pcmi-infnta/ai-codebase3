@@ -16,7 +16,7 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 const GREPTILE_API_KEY = "A1+sUJ/IzDKoKvl8L7/40JEmcTccnjSMlpwV31BqfvOv2M/8";
 const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
-const REPOSITORY_NAME = "pcmi-infnta/finance-app";
+const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
 
 // Helper functions to display messages
 const displayUserMessage = (content) => {
