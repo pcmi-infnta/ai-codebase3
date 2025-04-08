@@ -984,3 +984,15 @@ pre, code {
   white-space: pre-wrap;       /* Wrap long lines if needed */
   margin: 10px 0;             /* Some vertical margin */
 }
+
+.copy-button {
+  display: inline-block;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 3px;
+}

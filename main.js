@@ -13,10 +13,10 @@ const suggestions = document.querySelectorAll(".suggestion");
 const toggleThemeButton = document.querySelector("#theme-toggle-button");
 const deleteChatButton = document.querySelector("#delete-chat-button");
 
-const GREPTILE_API_KEY = "A1+sUJ/IzDKoKvl8L7/40JEmcTccnjSMlpwV31BqfvOv2M/8";
-const GITHUB_TOKEN = "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";
+const GREPTILE_API_KEY = "thg/M1gExyn/ELnHs8qLqFW5F19g2isDZ1bnOGNT2bnANr8i";
+const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
-const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
+const REPOSITORY_NAME = "Ejjay/ecommerce_jsm";
 
 // Helper functions to display messages
 const displayUserMessage = (content) => {
