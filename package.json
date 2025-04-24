@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "npx tailwindcss -i ./styles.css -o ./dist/output.css --watch",
-    "build": "npx tailwindcss -i ./styles.css -o ./dist/output.css"
+    "build": "mkdir -p public && cp -r *.html *.js *.css images public/ && npx tailwindcss -i ./styles.css -o ./public/dist/output.css"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
