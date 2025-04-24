@@ -1056,3 +1056,43 @@ pre, code {
   color: var(--text-color) !important;
   background-color: transparent !important;
 }
+
+
+
+.prose {
+  max-width: none !important;
+}
+
+.prose pre {
+  background-color: var(--secondary-color) !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+}
+
+.prose code {
+  color: var(--text-color) !important;
+  background-color: var(--secondary-color) !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.25rem !important;
+}
+
+.prose p {
+  margin: 1rem 0 !important;
+  color: var(--text-color) !important;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: var(--text-color) !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem !important;
+  margin: 1rem 0 !important;
+  color: var(--text-color) !important;
+}

@@ -2,8 +2,9 @@
 module.exports = {
   content: [
     "./src/**/*.{html,js}",
-    "./src/*.{html,js}"
+    "./index.html"
   ],
+  darkMode: 'class', // or 'media'
   theme: {
     extend: {
       typography: {
@@ -25,6 +26,6 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/typography')
+    require('@tailwindcss/typography'),
   ],
 }

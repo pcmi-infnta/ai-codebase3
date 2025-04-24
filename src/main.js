@@ -55,19 +55,19 @@ const displayAIMessage = (content) => {
         const parsedContent = marked(sanitizedContent);
 
         const html = `
-            <div class="message-content">
-                <div class="header-row">
-                    <div class="avatar-container">
-                        <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
-                    </div>
-                </div>
-                <div class="message-container">
-                    <div class="prose prose-invert prose-pre:bg-secondary prose-pre:p-4 prose-pre:rounded-lg">
-                        ${parsedContent}
-                    </div>
-                </div>
+    <div class="message-content">
+        <div class="header-row">
+            <div class="avatar-container">
+                <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
             </div>
-        `;
+        </div>
+        <div class="message-container">
+            <div class="prose dark:prose-invert max-w-none"> <!-- Changed this line -->
+                ${parsedContent}
+            </div>
+        </div>
+    </div>
+`;
         const incomingMessageDiv = createMessageElement(html, "incoming");
         chatContainer.appendChild(incomingMessageDiv);
     } catch (error) {
