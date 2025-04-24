@@ -1,5 +1,6 @@
 import { generateAPIResponse } from './scripts/generateAPIResponse.js';
 import { getCombinedTrainingData } from './scripts/training-data.js';
+import { marked } from 'marked';
 
 let conversationHistory = [];
 let userIsScrolling = false;
@@ -40,11 +41,12 @@ const displayUserMessage = (content) => {
 const displayAIMessage = (content) => {
     // Configure marked with better options
     marked.setOptions({
-        breaks: true,
-        gfm: true,
-        headerIds: true,
-        mangle: false,
+        breaks: true,        // Enable line breaks
+        gfm: true,          // Enable GitHub Flavored Markdown
+        headerIds: true,    // Enable header IDs
+        mangle: false,      // Disable mangling
         highlight: function(code, lang) {
+            // You can add syntax highlighting here if needed
             return code;
         }
     });
@@ -61,7 +63,7 @@ const displayAIMessage = (content) => {
                     </div>
                 </div>
                 <div class="message-container">
-                    <div class="prose prose-sm sm:prose-base dark:prose-invert">
+                    <div class="prose prose-invert prose-pre:bg-secondary prose-pre:p-4 prose-pre:rounded-lg">
                         ${parsedContent}
                     </div>
                 </div>

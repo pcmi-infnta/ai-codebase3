@@ -1001,42 +1001,58 @@ pre, code {
   border-radius: 3px;
 }
 
-/* Add these new styles */
+/* Add these new styles to your existing styles.css */
+.chat-list .message .text {
+  @apply prose prose-invert max-w-none;
+}
+
+/* Customize prose styles for dark/light mode */
 .prose {
-    max-width: none !important;
+  color: var(--text-color) !important;
 }
 
 .prose pre {
-    background-color: var(--secondary-color) !important;
-    border-radius: 0.5rem !important;
-    padding: 1rem !important;
-    margin: 1rem 0 !important;
+  background-color: var(--secondary-color) !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+  margin: 1rem 0 !important;
 }
 
 .prose code {
-    background-color: var(--secondary-color) !important;
-    padding: 0.2rem 0.4rem !important;
-    border-radius: 0.25rem !important;
-    font-size: 0.875rem !important;
+  background-color: var(--secondary-color) !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.25rem !important;
+  font-size: 0.875rem !important;
 }
 
 .prose p {
-    margin: 1rem 0 !important;
+  margin: 1rem 0 !important;
 }
 
 .prose ul {
-    list-style-type: disc !important;
-    padding-left: 1.5rem !important;
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
 }
 
 .prose ol {
-    list-style-type: decimal !important;
-    padding-left: 1.5rem !important;
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
 }
 
 .prose blockquote {
-    border-left: 4px solid var(--accent-color) !important;
-    padding-left: 1rem !important;
-    margin: 1rem 0 !important;
-    font-style: italic !important;
+  border-left: 4px solid var(--accent-color) !important;
+  padding-left: 1rem !important;
+  margin: 1rem 0 !important;
+  font-style: italic !important;
+}
+
+/* Ensure proper text color in both themes */
+.prose * {
+  color: var(--text-color) !important;
+}
+
+/* Fix code block styling */
+.prose pre code {
+  color: var(--text-color) !important;
+  background-color: transparent !important;
 }
