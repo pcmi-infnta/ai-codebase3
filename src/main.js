@@ -1,6 +1,5 @@
 import { generateAPIResponse } from './scripts/generateAPIResponse.js';
 import { getCombinedTrainingData } from './scripts/training-data.js';
-import { marked } from 'marked';
 
 let conversationHistory = [];
 let userIsScrolling = false;
