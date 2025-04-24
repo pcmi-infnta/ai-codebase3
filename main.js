@@ -16,7 +16,12 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 const GREPTILE_API_KEY = "thg/M1gExyn/ELnHs8qLqFW5F19g2isDZ1bnOGNT2bnANr8i";
 const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
-const REPOSITORY_NAME = "Ejjay/shofy";
+const REPOSITORY_NAME = "Ejjay/codebucks-blog";
+
+// Helper function to sanitize markdown
+function sanitizeMarkdown(content) {
+    return content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+}
 
 // Helper functions to display messages
 const displayUserMessage = (content) => {
@@ -33,20 +38,39 @@ const displayUserMessage = (content) => {
 }
 
 const displayAIMessage = (content) => {
-    const html = `
-        <div class="message-content">
-            <div class="header-row">
-                <div class="avatar-container">
-                    <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
+    // Configure marked
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: false,
+        mangle: false
+    });
+    
+    try {
+        const sanitizedContent = sanitizeMarkdown(content);
+        const parsedContent = marked(sanitizedContent);
+
+        const html = `
+            <div class="message-content">
+                <div class="header-row">
+                    <div class="avatar-container">
+                        <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
+                    </div>
+                </div>
+                <div class="message-container">
+                    <div class="prose dark:prose-invert">
+                        ${parsedContent}
+                    </div>
                 </div>
             </div>
-            <div class="message-container">
-                <p class="text">${content}</p>
-            </div>
-        </div>
-    `;
-    const incomingMessageDiv = createMessageElement(html, "incoming");
-    chatContainer.appendChild(incomingMessageDiv);
+        `;
+        const incomingMessageDiv = createMessageElement(html, "incoming");
+        chatContainer.appendChild(incomingMessageDiv);
+    } catch (error) {
+        console.error('Markdown parsing error:', error);
+        // Fallback to plain text
+        return displayAIMessage(content.toString());
+    }
 }
 
 const loadDataFromLocalstorage = () => {
@@ -96,47 +120,38 @@ function processAIResponse(responseText) {
 }
 
 const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
-    // Check if textElement and incomingMessageDiv are not null
     if (!textElement || !incomingMessageDiv) {
         console.error('textElement or incomingMessageDiv is null');
         return;
     }
 
-    // Update the text content
     textElement.innerHTML = convertCodeSnippets(text);
-
-    // Add fade-in animation
     incomingMessageDiv.classList.add("fade-in");
     setTimeout(() => {
         incomingMessageDiv.classList.remove("fade-in");
     }, 700);
 
-    // Update loading state
     isResponseGenerating = false;
     const icon = incomingMessageDiv.querySelector(".icon");
     if (icon) {
         icon.classList.remove("hide");
     }
 
-    // Scroll to bottom if not scrolling
     if (!userIsScrolling) {
         chatContainer.scrollTo(0, chatContainer.scrollHeight);
     }
 
-    // Add AI response to conversationHistory and save to localStorage
     const aiMessage = {
         id: "msg-" + conversationHistory.length,
         role: "assistant",
         content: text
     };
 
-    // Check for duplicates before adding to conversationHistory
     if (!conversationHistory.find(msg => msg.content === aiMessage.content && msg.role === "assistant")) {
         conversationHistory.push(aiMessage);
         localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
     }
 
-    // Add click event listeners to code snippets
     const codeSnippets = textElement.querySelectorAll('.ai-code-snippet');
     codeSnippets.forEach(snippet => {
         snippet.addEventListener('click', function() {
@@ -217,9 +232,16 @@ const showLoadingAnimation = () => {
     );
 }
 
-function copyMessage(text) {
+function copyMessage(button) {
+    const messageDiv = button.closest('.message-content');
+    const textElement = messageDiv.querySelector('.text');
+    const text = textElement.textContent;
+
     navigator.clipboard.writeText(text).then(() => {
-        // Optional: Show a success message
+        button.classList.add('copied');
+        setTimeout(() => {
+            button.classList.remove('copied');
+        }, 2000);
     }).catch(err => {
         console.error('Failed to copy:', err);
     });
@@ -261,7 +283,6 @@ const handleOutgoingChat = () => {
 
     isResponseGenerating = true;
 
-    // Add user message to conversationHistory
     const userMsg = {
         id: "msg-" + conversationHistory.length,
         role: "user",
@@ -269,7 +290,6 @@ const handleOutgoingChat = () => {
     };
     conversationHistory.push(userMsg);
 
-    // Display user message
     const html = `
         <div class="message-content">
             <img class="avatar" src="images/avatars/user.gif" alt="User avatar">
@@ -281,16 +301,13 @@ const handleOutgoingChat = () => {
     const outgoingMessageDiv = createMessageElement(html, "outgoing");
     chatContainer.appendChild(outgoingMessageDiv);
 
-    // Clear input and reset form
     typingForm.reset();
     inputWrapper.classList.remove("expanded");
     actionButtons.classList.remove("hide");
 
-    // Update UI
     document.body.classList.add("hide-header");
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
 
-    // Show loading animation
     setTimeout(showLoadingAnimation, 500);
 }
 

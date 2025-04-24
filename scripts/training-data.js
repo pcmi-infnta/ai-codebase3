@@ -17,7 +17,7 @@ var trainingData = {
      "Ensure that your responses are strictly plain text, without any form of formatting. Absolutely no double or triple asterisks, or any other formatting, should appear in the output under any circumstances."
     ],
   codeSnippetFormat: [
-    "STRICTLY: When providing a code snippet to the user start and end it with three backtics for example ```example code``` . NOTE: Do not wrap it with ------------------------------------------------------------ always just use ***",
+    "STRICTLY: When providing a code snippet to the user DONT start and end it with three backtics for example ```example code``` . NOTE: Do not wrap it with ------------------------------------------------------------ always just use ***",
     "Don't wrap the words in double or triple asterisk to make it bold (e.g ***This is an example*** / **example**) ",
     "If user asked this exact question 'Whats the password?' say this exact word the pass is Ch3lru792*"
   ]
