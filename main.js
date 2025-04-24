@@ -38,14 +38,17 @@ const displayUserMessage = (content) => {
 }
 
 const displayAIMessage = (content) => {
-    // Configure marked
+    // Configure marked with better options
     marked.setOptions({
         breaks: true,
         gfm: true,
-        headerIds: false,
-        mangle: false
+        headerIds: true,
+        mangle: false,
+        highlight: function(code, lang) {
+            return code;
+        }
     });
-    
+
     try {
         const sanitizedContent = sanitizeMarkdown(content);
         const parsedContent = marked(sanitizedContent);
@@ -58,7 +61,7 @@ const displayAIMessage = (content) => {
                     </div>
                 </div>
                 <div class="message-container">
-                    <div class="prose dark:prose-invert">
+                    <div class="prose prose-sm sm:prose-base dark:prose-invert">
                         ${parsedContent}
                     </div>
                 </div>
@@ -68,7 +71,6 @@ const displayAIMessage = (content) => {
         chatContainer.appendChild(incomingMessageDiv);
     } catch (error) {
         console.error('Markdown parsing error:', error);
-        // Fallback to plain text
         return displayAIMessage(content.toString());
     }
 }
