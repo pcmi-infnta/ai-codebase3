@@ -9,19 +9,31 @@ module.exports = {
             pre: {
               backgroundColor: 'var(--secondary-color)',
               color: 'var(--text-color)',
-              padding: '1rem',
-              borderRadius: '0.5rem',
+              padding: '1.25rem',
+              borderRadius: '0.75rem',
+              border: '1px solid var(--border-color)',
+              marginTop: '1.5rem',
+              marginBottom: '1.5rem',
+              overflowX: 'auto',
+              fontSize: '0.875rem',
+              lineHeight: '1.7142857',
               code: {
                 backgroundColor: 'transparent',
                 padding: '0',
-                color: 'inherit'
+                color: 'inherit',
+                fontSize: 'inherit',
+                fontWeight: '400',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
               }
             },
             code: {
               backgroundColor: 'var(--secondary-color)',
               color: 'var(--text-color)',
-              padding: '0.2rem 0.4rem',
+              padding: '0.25rem 0.4rem',
               borderRadius: '0.25rem',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              border: '1px solid var(--border-color)',
               '&::before': {
                 content: '""'
               },
