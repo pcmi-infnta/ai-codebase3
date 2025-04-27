@@ -1018,20 +1018,18 @@ pre, code {
 .prose h3,
 .prose h4 {
   color: var(--text-color) !important;
-  margin: 0.5rem 0 0.25rem !important; /* Further reduced from 0.75rem 0 0.5rem */
+  margin: 0.5rem 0 0.25rem !important; /* Reduced for headings */
   font-weight: 600 !important;
 }
 
-.prose p,
-.prose ul,
-.prose ol,
-.prose blockquote {
-  margin: 0.25rem 0 !important; /* Further reduced from 0.5rem 0 */
+.prose p {
+  margin: 0.25rem 0 !important; /* Tightened for paragraphs */
 }
 
 .prose ul,
 .prose ol {
-  padding-left: 1.5rem !important;
+  margin: 0.15rem 0 !important; /* Further reduced margin for lists */
+  padding-left: 1.5rem !important; /* Keeping padding for bullet points */
 }
 
 .prose blockquote {
@@ -1079,8 +1077,4 @@ pre, code {
     background-color: var(--secondary-color) !important;
     padding: 0.2rem 0.4rem !important;
     border-radius: 0.25rem !important;
-}
-
-.prose p {
-    margin: 0.25rem 0 !important; /* Further reduced from 0.5rem 0 */
 }
