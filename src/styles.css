@@ -1012,25 +1012,25 @@ pre, code {
   color: var(--text-color) !important;
 }
 
-.prose p,
-.prose ul,
-.prose ol,
-.prose blockquote {
-  margin: 1rem 0 !important;
-}
-
-.prose ul,
-.prose ol {
-  padding-left: 1.5rem !important;
-}
-
 .prose h1,
 .prose h2,
 .prose h3,
 .prose h4 {
   color: var(--text-color) !important;
-  margin: 1.5rem 0 1rem !important;
+  margin: 0.75rem 0 0.5rem !important; /* Reduced from 1.5rem 0 1rem */
   font-weight: 600 !important;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote {
+  margin: 0.5rem 0 !important; /* Reduced from 1rem 0 */
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem !important;
 }
 
 .prose blockquote {
@@ -1081,5 +1081,5 @@ pre, code {
 }
 
 .prose p {
-    margin: 1rem 0 !important;
+    margin: 0.5rem 0 !important; /* Reduced from 1rem 0 */
 }
