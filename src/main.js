@@ -39,22 +39,15 @@ const displayUserMessage = (content) => {
 }
 
 const displayAIMessage = (content) => {
-    marked.setOptions({
-        highlight: function(code, language) {
-            if (language) {
-                return hljs.highlight(code, {language: language}).value;
-            }
-            return hljs.highlightAuto(code).value;
-        },
-        breaks: true,
-        gfm: true,
-        headerIds: true,
-        mangle: false
-    });
-
     try {
         const sanitizedContent = sanitizeMarkdown(content);
-        const parsedContent = marked(sanitizedContent);
+        // Add specific handling for code blocks
+        const processedContent = sanitizedContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
+            const lang = language || '';
+            return `<pre><code class="language-${lang}">${code.trim()}</code></pre>`;
+        });
+
+        const parsedContent = marked(processedContent);
 
         const html = `
             <div class="message-content">
@@ -73,10 +66,11 @@ const displayAIMessage = (content) => {
         const incomingMessageDiv = createMessageElement(html, "incoming");
         chatContainer.appendChild(incomingMessageDiv);
 
-        // Initialize highlight.js after adding content
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightBlock(block);
+        // Initialize highlighting on the new content
+        incomingMessageDiv.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
         });
+
     } catch (error) {
         console.error('Markdown parsing error:', error);
         return displayAIMessage(content.toString());

@@ -1056,15 +1056,25 @@ pre, code {
 }
 
 /* Highlight.js */
-pre code.hljs {
-    padding: 1em;
+pre {
+    position: relative;
+    background: #1e1e1e;
     border-radius: 8px;
     margin: 1em 0;
+    padding: 1em;
+    overflow-x: auto;
+}
+
+code {
     font-family: 'Fira Code', monospace;
     font-size: 0.9em;
     line-height: 1.5;
 }
 
+/* Specific styling for highlighted code */
 .hljs {
     background: #1e1e1e !important;
+    color: #d4d4d4;
+    padding: 1em;
+    border-radius: 8px;
 }
