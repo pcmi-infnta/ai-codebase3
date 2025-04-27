@@ -10,16 +10,28 @@ module.exports = {
           css: {
             color: 'var(--text-color)',
             maxWidth: 'none',
-            code: {
-              color: 'var(--text-color)',
-              backgroundColor: 'var(--secondary-color)',
-              borderRadius: '0.25rem',
-              padding: '0.2rem 0.4rem',
-            },
             pre: {
               backgroundColor: 'var(--secondary-color)',
               color: 'var(--text-color)',
+              padding: '1rem',
               borderRadius: '0.5rem',
+              code: {
+               : 'transparent',
+                padding: '0',
+                color: 'inherit'
+              }
+            },
+            code: {
+              backgroundColor: 'var(--secondary-color)',
+              color: 'var(--text-color)',
+              padding: '0.2rem 0.4rem',
+              borderRadius: '0.25rem',
+              '&::before': {
+                content: '""'
+              },
+              '&::after': {
+                content: '""'
+              }
             }
           }
         }

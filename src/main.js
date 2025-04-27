@@ -98,7 +98,8 @@ const loadDataFromLocalstorage = () => {
 
 function convertCodeSnippets(text) {
     return text.replace(/```([\s\S]*?)```/g, function(match, p1) {
-        return `<div class="ai-code-snippet">${p1.trim()}</div>`;
+        // Return proper markdown code block format
+        return `\`\`\`\n${p1.trim()}\n\`\`\``;
     });
 }
 
