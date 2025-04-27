@@ -1,22 +1,18 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{html,js}",
-    "./index.html"
-  ],
+  content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
       typography: {
         DEFAULT: {
           css: {
-            color: 'var(--text-color)',
-            maxWidth: 'none',
             pre: {
               backgroundColor: 'var(--secondary-color)',
               color: 'var(--text-color)',
               padding: '1rem',
               borderRadius: '0.5rem',
               code: {
-               : 'transparent',
+                backgroundColor: 'transparent',
                 padding: '0',
                 color: 'inherit'
               }
