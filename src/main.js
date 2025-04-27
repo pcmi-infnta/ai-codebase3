@@ -1,5 +1,7 @@
 import { generateAPIResponse } from './scripts/generateAPIResponse.js';
 import { getCombinedTrainingData } from './scripts/training-data.js';
+import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
+const marked = window.marked;
 
 let conversationHistory = [];
 let userIsScrolling = false;
@@ -123,9 +125,22 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         return;
     }
 
+    if (typeof marked !== 'function') {
+        console.error('marked is not loaded properly');
+        // Fallback to basic HTML if marked is not available
+        let proseContainer = textElement.querySelector('.prose') || textElement;
+        proseContainer.innerHTML = convertCodeSnippets(text);
+        return;
+    }
+
     // Find or create the prose container
     let proseContainer = textElement.querySelector('.prose') || textElement;
-    proseContainer.innerHTML = marked(convertCodeSnippets(text));
+    try {
+        proseContainer.innerHTML = marked(convertCodeSnippets(text));
+    } catch (error) {
+        console.error('Error parsing markdown:', error);
+        proseContainer.innerHTML = convertCodeSnippets(text);
+    }
     
     incomingMessageDiv.classList.add("fade-in");
     setTimeout(() => {
