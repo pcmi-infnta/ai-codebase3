@@ -1,7 +1,6 @@
 import { generateAPIResponse } from './scripts/generateAPIResponse.js';
 import { getCombinedTrainingData } from './scripts/training-data.js';
 import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
-const marked = window.marked;
 
 let conversationHistory = [];
 let userIsScrolling = false;
