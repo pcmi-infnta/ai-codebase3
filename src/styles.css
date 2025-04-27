@@ -1060,3 +1060,26 @@ pre, code {
 .prose * {
   color: var(--text-color) !important;
 }
+
+/* In styles.css */
+.prose {
+    max-width: none !important;
+}
+
+.prose pre {
+    margin: 0 !important;
+    padding: 1rem !important;
+    background-color: var(--secondary-color) !important;
+    border-radius: 0.5rem !important;
+}
+
+.prose code {
+    color: var(--text-color) !important;
+    background-color: var(--secondary-color) !important;
+    padding: 0.2rem 0.4rem !important;
+    border-radius: 0.25rem !important;
+}
+
+.prose p {
+    margin: 1rem 0 !important;
+}

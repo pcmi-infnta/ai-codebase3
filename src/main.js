@@ -38,16 +38,11 @@ const displayUserMessage = (content) => {
 }
 
 const displayAIMessage = (content) => {
-    // Configure marked with better options
     marked.setOptions({
-        breaks: true,        // Enable line breaks
-        gfm: true,          // Enable GitHub Flavored Markdown
-        headerIds: true,    // Enable header IDs
-        mangle: false,      // Disable mangling
-        highlight: function(code, lang) {
-            // You can add syntax highlighting here if needed
-            return code;
-        }
+        breaks: true,
+        gfm: true,
+        headerIds: true,
+        mangle: false
     });
 
     try {
@@ -55,19 +50,19 @@ const displayAIMessage = (content) => {
         const parsedContent = marked(sanitizedContent);
 
         const html = `
-    <div class="message-content">
-        <div class="header-row">
-            <div class="avatar-container">
-                <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
+            <div class="message-content">
+                <div class="header-row">
+                    <div class="avatar-container">
+                        <img class="avatar default-avatar" src="images/avatars/pcmi-bot.png" alt="Bot avatar">
+                    </div>
+                </div>
+                <div class="message-container">
+                    <div class="text prose prose-invert max-w-none">
+                        ${parsedContent}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="message-container">
-            <div class="prose dark:prose-invert max-w-none"> <!-- Changed this line -->
-                ${parsedContent}
-            </div>
-        </div>
-    </div>
-`;
+        `;
         const incomingMessageDiv = createMessageElement(html, "incoming");
         chatContainer.appendChild(incomingMessageDiv);
     } catch (error) {
@@ -128,7 +123,10 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         return;
     }
 
-    textElement.innerHTML = convertCodeSnippets(text);
+    // Find or create the prose container
+    let proseContainer = textElement.querySelector('.prose') || textElement;
+    proseContainer.innerHTML = marked(convertCodeSnippets(text));
+    
     incomingMessageDiv.classList.add("fade-in");
     setTimeout(() => {
         incomingMessageDiv.classList.remove("fade-in");
