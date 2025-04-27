@@ -27,12 +27,12 @@ module.exports = {
               }
             },
             code: {
-              backgroundColor: 'var(--secondary-color)',
-              color: 'var(--text-color)',
-              padding: '0.25rem 0.4rem',
-              borderRadius: '0.25rem',
+              backgroundColor: 'rgb(31 41 55)',
+              color: 'rgb(229 231 235)',
+              padding: '0.25rem 0.5rem',
+              borderRadius: '0.375rem',
               fontSize: '0.875rem',
-              fontWeight: '600',
+              fontWeight: '400',
               border: '1px solid var(--border-color)',
               '&::before': {
                 content: '""'
@@ -40,6 +40,13 @@ module.exports = {
               '&::after': {
                 content: '""'
               }
+            },
+            'pre code': {
+              backgroundColor: 'transparent',
+              padding: '0',
+              color: 'inherit',
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
             }
           }
         }
