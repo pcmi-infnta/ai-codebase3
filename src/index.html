@@ -13,8 +13,15 @@
   <!-- Highlight.js CSS and JS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-  <script>hljs.highlightAll();</script>
-  
+  <script>
+      // Configure highlight.js
+      hljs.configure({
+          ignoreUnescapedHTML: true,
+          languages: ['javascript', 'html', 'css', 'python', 'java', 'cpp']
+      });
+      hljs.highlightAll();
+  </script>
+
 </head>
 <body>
   <header class="header">

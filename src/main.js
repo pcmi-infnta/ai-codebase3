@@ -130,55 +130,56 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         return;
     }
 
-    if (typeof marked !== 'function') {
-        console.error('marked is not loaded properly');
-        // Fallback to basic HTML if marked is not available
-        let proseContainer = textElement.querySelector('.prose') || textElement;
-        proseContainer.innerHTML = convertCodeSnippets(text);
-        return;
-    }
-
     // Find or create the prose container
     let proseContainer = textElement.querySelector('.prose') || textElement;
-    try {
-        proseContainer.innerHTML = marked(convertCodeSnippets(text));
-    } catch (error) {
-        console.error('Error parsing markdown:', error);
-        proseContainer.innerHTML = convertCodeSnippets(text);
-    }
     
-    incomingMessageDiv.classList.add("fade-in");
-    setTimeout(() => {
-        incomingMessageDiv.classList.remove("fade-in");
-    }, 700);
-
-    isResponseGenerating = false;
-    const icon = incomingMessageDiv.querySelector(".icon");
-    if (icon) {
-        icon.classList.remove("hide");
-    }
-
-    if (!userIsScrolling) {
-        chatContainer.scrollTo(0, chatContainer.scrollHeight);
-    }
-
-    const aiMessage = {
-        id: "msg-" + conversationHistory.length,
-        role: "assistant",
-        content: text
-    };
-
-    if (!conversationHistory.find(msg => msg.content === aiMessage.content && msg.role === "assistant")) {
-        conversationHistory.push(aiMessage);
-        localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
-    }
-
-    const codeSnippets = textElement.querySelectorAll('.ai-code-snippet');
-    codeSnippets.forEach(snippet => {
-        snippet.addEventListener('click', function() {
-            copyMessage(this.textContent);
+    try {
+        // Convert code blocks to proper format
+        const processedText = text.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
+            const lang = language || '';
+            return `<pre><code class="language-${lang}">${code.trim()}</code></pre>`;
         });
-    });
+
+        // Parse markdown and set content
+        proseContainer.innerHTML = marked(processedText);
+
+        // Initialize highlight.js on all code blocks
+        proseContainer.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+
+        // Add fade-in effect
+        incomingMessageDiv.classList.add("fade-in");
+        setTimeout(() => {
+            incomingMessageDiv.classList.remove("fade-in");
+        }, 700);
+
+        isResponseGenerating = false;
+        const icon = incomingMessageDiv.querySelector(".icon");
+        if (icon) {
+            icon.classList.remove("hide");
+        }
+
+        if (!userIsScrolling) {
+            chatContainer.scrollTo(0, chatContainer.scrollHeight);
+        }
+
+        // Handle conversation history
+        const aiMessage = {
+            id: "msg-" + conversationHistory.length,
+            role: "assistant",
+            content: text
+        };
+
+        if (!conversationHistory.find(msg => msg.content === aiMessage.content && msg.role === "assistant")) {
+            conversationHistory.push(aiMessage);
+            localStorage.setItem("conversation-history", JSON.stringify(conversationHistory));
+        }
+
+    } catch (error) {
+        console.error('Error in showFadeInEffect:', error);
+        proseContainer.innerHTML = text;
+    }
 }
 
 chatContainer.addEventListener('scroll', () => {

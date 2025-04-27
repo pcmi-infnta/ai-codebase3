@@ -1056,9 +1056,10 @@ pre, code {
 }
 
 /* Highlight.js */
+/* Add or update these styles in your CSS */
 pre {
     position: relative;
-    background: #1e1e1e;
+    background: #1e1e1e !important;
     border-radius: 8px;
     margin: 1em 0;
     padding: 1em;
@@ -1071,10 +1072,15 @@ code {
     line-height: 1.5;
 }
 
-/* Specific styling for highlighted code */
 .hljs {
     background: #1e1e1e !important;
-    color: #d4d4d4;
+    color: #d4d4d4 !important;
     padding: 1em;
     border-radius: 8px;
 }
+
+/* Add specific language colors */
+.hljs-keyword { color: #569CD6 !important; }
+.hljs-string { color: #CE9178 !important; }
+.hljs-function { color: #DCDCAA !important; }
+.hljs-comment { color: #6A9955 !important; }
