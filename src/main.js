@@ -40,6 +40,12 @@ const displayUserMessage = (content) => {
 
 const displayAIMessage = (content) => {
     marked.setOptions({
+        highlight: function(code, language) {
+            if (language) {
+                return hljs.highlight(code, {language: language}).value;
+            }
+            return hljs.highlightAuto(code).value;
+        },
         breaks: true,
         gfm: true,
         headerIds: true,
@@ -58,7 +64,7 @@ const displayAIMessage = (content) => {
                     </div>
                 </div>
                 <div class="message-container">
-                    <div class="text prose prose-invert max-w-none">
+                    <div class="text">
                         ${parsedContent}
                     </div>
                 </div>
@@ -66,6 +72,11 @@ const displayAIMessage = (content) => {
         `;
         const incomingMessageDiv = createMessageElement(html, "incoming");
         chatContainer.appendChild(incomingMessageDiv);
+
+        // Initialize highlight.js after adding content
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
     } catch (error) {
         console.error('Markdown parsing error:', error);
         return displayAIMessage(content.toString());

@@ -1054,3 +1054,17 @@ pre, code {
 .prose * {
   color: var(--text-color) !important;
 }
+
+/* Highlight.js */
+pre code.hljs {
+    padding: 1em;
+    border-radius: 8px;
+    margin: 1em 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.hljs {
+    background: #1e1e1e !important;
+}
