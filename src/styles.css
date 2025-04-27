@@ -1002,6 +1002,7 @@ pre, code {
 }
 
 /* Add these new styles to your existing styles.css */
+
 .chat-list .message .text {
   @apply prose prose-invert max-w-none;
 }
@@ -1017,7 +1018,7 @@ pre, code {
 .prose h3,
 .prose h4 {
   color: var(--text-color) !important;
-  margin: 0.75rem 0 0.5rem !important; /* Reduced from 1.5rem 0 1rem */
+  margin: 0.5rem 0 0.25rem !important; /* Further reduced from 0.75rem 0 0.5rem */
   font-weight: 600 !important;
 }
 
@@ -1025,7 +1026,7 @@ pre, code {
 .prose ul,
 .prose ol,
 .prose blockquote {
-  margin: 0.5rem 0 !important; /* Reduced from 1rem 0 */
+  margin: 0.25rem 0 !important; /* Further reduced from 0.5rem 0 */
 }
 
 .prose ul,
@@ -1081,5 +1082,5 @@ pre, code {
 }
 
 .prose p {
-    margin: 0.5rem 0 !important; /* Reduced from 1rem 0 */
+    margin: 0.25rem 0 !important; /* Further reduced from 0.5rem 0 */
 }
