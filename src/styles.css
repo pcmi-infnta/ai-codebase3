@@ -1002,7 +1002,7 @@ pre, code {
 }
 
 /* Add these new styles to your existing styles.css */
-..chat-list .message .text {
+.chat-list .message .text {
   @apply prose prose-invert max-w-none;
 }
 
