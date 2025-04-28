@@ -20,7 +20,7 @@ var trainingData = {
     "- Use > for blockquotes",
     "- Use - or * for lists",
     "- Use # for headings",
-    "Use (two spaces) plus (numbers) for keyponts"
+    "Use (two spaces) plus (numbers) for bullet numbers"
   ]
 };
 
