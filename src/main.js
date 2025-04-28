@@ -138,7 +138,7 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         const processedText = text.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
             const lang = language || '';
             return `<pre><code class="language-${lang}">${code.trim()}</code></pre>`;
-        });
+        }); 
 
         // Parse markdown and set content
         proseContainer.innerHTML = marked(processedText);
