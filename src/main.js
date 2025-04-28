@@ -159,12 +159,28 @@ const showFadeInEffect = (text, textElement, incomingMessageDiv) => {
         // Parse markdown and set content
         proseContainer.innerHTML = marked(processedText);
 
-        // Initialize highlight.js on all code blocks
+        // Initialize highlight.js and click-to-copy on all code blocks
         proseContainer.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightElement(block);
+            
+            // Add click-to-copy functionality
+            block.style.cursor = 'pointer';
+            block.addEventListener('click', function() {
+                const codeText = this.textContent;
+                navigator.clipboard.writeText(codeText).then(() => {
+                    // Visual feedback
+                    const originalBackground = this.style.background;
+                    this.style.background = '#4CAF50';
+                    setTimeout(() => {
+                        this.style.background = originalBackground;
+                    }, 200);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                });
+            });
         });
 
-        // Add fade-in effect
+        // Rest of the function remains the same...
         incomingMessageDiv.classList.add("fade-in");
         setTimeout(() => {
             incomingMessageDiv.classList.remove("fade-in");
