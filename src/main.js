@@ -69,6 +69,22 @@ const displayAIMessage = (content) => {
         // Initialize highlighting on the new content
         incomingMessageDiv.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightElement(block);
+            
+            // Add click-to-copy functionality
+            block.style.cursor = 'pointer'; // Make it look clickable
+            block.addEventListener('click', function() {
+                const codeText = this.textContent;
+                navigator.clipboard.writeText(codeText).then(() => {
+                    // Optional: Add visual feedback
+                    const originalBackground = this.style.background;
+                    this.style.background = '#4CAF50';
+                    setTimeout(() => {
+                        this.style.background = originalBackground;
+                    }, 200);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                });
+            });
         });
 
     } catch (error) {
