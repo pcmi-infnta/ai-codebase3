@@ -17,7 +17,7 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 const GREPTILE_API_KEY = "thg/M1gExyn/ELnHs8qLqFW5F19g2isDZ1bnOGNT2bnANr8i";
 const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
-const REPOSITORY_NAME = "Ejjay/codebucks-blog";
+const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
 
 // Helper function to sanitize markdown
 function sanitizeMarkdown(content) {
