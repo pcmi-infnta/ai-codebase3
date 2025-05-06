@@ -19,7 +19,6 @@ const GITHUB_TOKEN = "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";
 const API_URL = "https://api.greptile.com/query";
 //const REPOSITORY_NAME = "Ejjay/ai-interview2";
 // const REPOSITORY_NAME = "pcmi-infnta/ai-codebase3";
-const API_URL = "https://api.greptile.com/query";
 const REPOSITORY_NAME = "Ejjay/wix-store";
 
 // Helper function to sanitize markdown
